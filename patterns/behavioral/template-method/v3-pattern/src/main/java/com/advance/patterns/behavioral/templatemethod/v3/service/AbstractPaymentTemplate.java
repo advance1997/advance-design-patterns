@@ -4,43 +4,76 @@ import com.advance.patterns.behavioral.templatemethod.v3.domain.*;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-/** 固定支付骨架；每次请求仅使用局部变量，不在模板实例中存放请求状态。 */
+/**
+ * 支付流程模板，以 final 入口固定顺序并开放渠道步骤和前后置钩子。
+ *
+ * @author advance
+ * @since 2026-10-26 23:05:19
+ */
 public abstract class AbstractPaymentTemplate {
+    /** 教学流程记录器，用于观察步骤顺序。 */
     private final Consumer<String> events;
 
+    /**
+     * 创建 AbstractPaymentTemplate 实例并初始化依赖或业务数据。
+     *
+     * @param events 教学流程事件记录器，约定不抛出异常
+     */
     protected AbstractPaymentTemplate(Consumer<String> events) {
-        this.events = Objects.requireNonNull(events, "events");
+        this.events = Objects.requireNonNull(events, "流程记录器 events 不能为空");
     }
 
+    /**
+     * 执行支付流程，渠道或步骤异常向调用方传播。
+     *
+     * @param command 待校验或执行的支付命令
+     * @return 渠道确认后的统一支付结果
+     * @throws RuntimeException 输入校验、渠道调用或扩展步骤失败时向调用方传播
+     */
     public final PaymentResult pay(PaymentCommand command) {
-        Objects.requireNonNull(command, "command").validate();
-        System.out.println("[template-method/v3] AbstractPaymentTemplate ---> before");
+        Objects.requireNonNull(command, "支付命令 command 不能为空").validate();
+        System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 开始执行前置步骤");
         events.accept("before");
         try {
-            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> beforePay hook");
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 进入 beforePay 前置扩展钩子");
             beforePay(command);
             PaymentResult result = Objects.requireNonNull(doPay(command), "渠道结果不能为空");
-            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> afterPay hook");
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 进入 afterPay 后置扩展钩子");
             afterPay(command, result);
-            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> success");
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 业务步骤执行成功");
             events.accept("success");
             return result;
         } catch (RuntimeException failure) {
-            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> failure");
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 业务步骤执行失败");
             events.accept("failure");
             throw failure;
         } finally {
-            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> complete");
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 流程执行结束");
             events.accept("complete");
         }
     }
 
-    /** 必须实现的变化步骤：调用渠道、校验响应、转换结果。 */
+    /**
+     * 执行子类提供的渠道支付步骤，并返回确认结果。
+     *
+     * @param command 待校验或执行的支付命令
+     * @return 渠道确认后的统一支付结果
+     * @throws RuntimeException 输入校验、渠道调用或扩展步骤失败时向调用方传播
+     */
     protected abstract PaymentResult doPay(PaymentCommand command);
 
-    /** 可选前置钩子，例如渠道特有校验；默认不做任何事。 */
+    /**
+     * 执行可选前置钩子；默认无操作，子类可追加渠道校验。
+     *
+     * @param command 待校验或执行的支付命令
+     */
     protected void beforePay(PaymentCommand command) {}
 
-    /** 可选后置钩子；此时外部渠道可能已经成功，失败不可直接重试支付。 */
+    /**
+     * 执行可选后置钩子；失败不代表外部支付已回滚。
+     *
+     * @param command 待校验或执行的支付命令
+     * @param result 渠道确认后的统一支付结果
+     */
     protected void afterPay(PaymentCommand command, PaymentResult result) {}
 }
