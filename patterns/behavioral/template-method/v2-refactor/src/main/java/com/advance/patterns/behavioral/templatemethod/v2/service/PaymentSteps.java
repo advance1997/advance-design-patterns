@@ -2,7 +2,6 @@ package com.advance.patterns.behavioral.templatemethod.v2.service;
 
 import com.advance.patterns.behavioral.templatemethod.v2.domain.PaymentCommand;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * 支付公共步骤助手，仅复用步骤实现，不控制整体执行顺序。
@@ -11,16 +10,12 @@ import java.util.function.Consumer;
  * @since 2026-10-26 23:05:19
  */
 final class PaymentSteps {
-    /** 教学流程记录器，用于观察步骤顺序。 */
-    private final Consumer<String> events;
 
     /**
      * 创建 PaymentSteps 实例并初始化依赖或业务数据。
      *
-     * @param events 教学流程事件记录器，约定不抛出异常
      */
-    PaymentSteps(Consumer<String> events) {
-        this.events = Objects.requireNonNull(events, "流程记录器 events 不能为空");
+    PaymentSteps() {
     }
 
     /**
@@ -32,17 +27,17 @@ final class PaymentSteps {
     /**
      * 记录支付前置步骤。
      */
-    void before() { System.out.println("[template-method/v2] PaymentSteps ---> 开始执行前置步骤"); events.accept("before"); }
+    void before() { System.out.println("[template-method/v2] PaymentSteps ---> 开始执行前置步骤");  }
     /**
      * 记录支付流程成功步骤。
      */
-    void success() { System.out.println("[template-method/v2] PaymentSteps ---> 业务步骤执行成功"); events.accept("success"); }
+    void success() { System.out.println("[template-method/v2] PaymentSteps ---> 业务步骤执行成功");  }
     /**
      * 记录支付流程异常步骤。
      */
-    void failure() { System.out.println("[template-method/v2] PaymentSteps ---> 业务步骤执行失败"); events.accept("failure"); }
+    void failure() { System.out.println("[template-method/v2] PaymentSteps ---> 业务步骤执行失败");  }
     /**
      * 记录支付流程结束步骤。
      */
-    void complete() { System.out.println("[template-method/v2] PaymentSteps ---> 流程执行结束"); events.accept("complete"); }
+    void complete() { System.out.println("[template-method/v2] PaymentSteps ---> 流程执行结束");  }
 }

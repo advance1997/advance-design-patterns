@@ -29,7 +29,7 @@ public final class TruckTransport implements Transport {
         System.out.println("[factory-method/v1] TruckTransport.deliver ---> 开始执行");
         try {
             java.util.Objects.requireNonNull(request, "配送请求 request 不能为空");
-            return new DeliveryReceipt(request.orderId(), "TRUCK", request.destination());
+            return new DeliveryReceipt(request.getOrderId(), "TRUCK", request.getDestination());
         } catch (RuntimeException failure) {
             System.out.println("[factory-method/v1] TruckTransport.deliver ---> 执行失败，异常类型：" + failure.getClass().getSimpleName()
                     + " | " + failure.getMessage());
