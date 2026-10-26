@@ -38,10 +38,17 @@ public final class DeliveryService {
             Objects.requireNonNull(request, "配送请求 request 不能为空");
 
             // V1 的问题：业务服务必须知道并直接创建每一种具体运输工具。
-            Transport transport = switch (method) {
-                case ROAD -> new TruckTransport();
-                case SEA -> new ShipTransport();
-            };
+            Transport transport;
+            switch (method) {
+                case ROAD:
+                    transport = new TruckTransport();
+                    break;
+                case SEA:
+                    transport = new ShipTransport();
+                    break;
+                default:
+                    throw new IllegalArgumentException("不支持的配送方式：" + method);
+            }
             return transport.deliver(request);
         } catch (RuntimeException failure) {
             System.out.println("[factory-method/v1] DeliveryService.arrange ---> 执行失败，异常类型：" + failure.getClass().getSimpleName()

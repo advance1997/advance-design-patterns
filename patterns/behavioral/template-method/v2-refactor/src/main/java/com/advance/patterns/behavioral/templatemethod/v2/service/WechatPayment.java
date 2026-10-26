@@ -3,7 +3,6 @@ package com.advance.patterns.behavioral.templatemethod.v2.service;
 import com.advance.patterns.behavioral.templatemethod.v2.domain.*;
 import com.advance.patterns.behavioral.templatemethod.v2.gateway.WechatPayClient;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * 微信支付实现，处理元到分转换、响应校验与结果转换。
@@ -14,6 +13,7 @@ import java.util.function.Consumer;
 public final class WechatPayment {
     /** 渠道客户端，负责执行外部协议调用。 */
     private final WechatPayClient client;
+
     /** 公共支付步骤助手。 */
     private final PaymentSteps steps;
 
@@ -21,11 +21,10 @@ public final class WechatPayment {
      * 创建 WechatPayment 实例并初始化依赖或业务数据。
      *
      * @param client 当前渠道的客户端实现
-     * @param events 教学流程事件记录器，约定不抛出异常
      */
-    public WechatPayment(WechatPayClient client, Consumer<String> events) {
+    public WechatPayment(WechatPayClient client) {
         this.client = Objects.requireNonNull(client, "渠道客户端 client 不能为空");
-        this.steps = new PaymentSteps(events);
+        this.steps = new PaymentSteps();
     }
 
     // 提取了公共步骤，但执行顺序仍由每个渠道自己维护。
@@ -60,14 +59,14 @@ public final class WechatPayment {
      */
     private PaymentResult invokeChannel(PaymentCommand command) {
         System.out.println("[template-method/v2] WechatPayment ---> 调用渠道客户端");
-        var response = client.createTransaction(command.paymentNo(),
-                command.amount().movePointRight(2).longValueExact());
-        if (response == null || !response.success()
-                || response.transactionId() == null || response.transactionId().isBlank()) {
+        WechatPayClient.Response response = client.createTransaction(command.getPaymentNo(),
+                command.getAmount().movePointRight(2).longValueExact());
+        if (response == null || !response.isSuccess()
+                || response.getTransactionId() == null || response.getTransactionId().trim().isEmpty()) {
             System.out.println("[template-method/v2] WechatPayment ---> 渠道响应校验未通过");
             throw new PaymentException("微信未确认支付成功");
         }
         System.out.println("[template-method/v2] WechatPayment ---> 将渠道响应转换为统一结果");
-        return new PaymentResult(command.paymentNo(), "WECHAT_PAY", response.transactionId());
+        return new PaymentResult(command.getPaymentNo(), "WECHAT_PAY", response.getTransactionId());
     }
 }

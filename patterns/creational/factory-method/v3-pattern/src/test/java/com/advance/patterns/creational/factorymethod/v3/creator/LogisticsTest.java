@@ -1,84 +1,38 @@
 package com.advance.patterns.creational.factorymethod.v3.creator;
 
-import com.advance.patterns.creational.factorymethod.v3.domain.DeliveryReceipt;
-import com.advance.patterns.creational.factorymethod.v3.domain.DeliveryRequest;
-import com.advance.patterns.creational.factorymethod.v3.product.Transport;
+import com.advance.patterns.creational.factorymethod.v3.domain.*;
+import com.advance.patterns.creational.factorymethod.v3.product.*;
+import com.advance.patterns.creational.factorymethod.v3.creator.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 /**
- * 验证LogisticsTest对应的正常路径、边界条件及异常行为。
+ * LogisticsTest 的独立打印演示；运行完成不代表结果已自动判定正确。
  *
  * @author advance
- * @since 2026-10-26 23:05:19
+ * @since 2026-10-26 23:26:13
  */
-class LogisticsTest {
-
+public class LogisticsTest {
     /**
-     * 验证公路创建者通过工厂方法提供卡车产品。
+     * 演示使用卡车 TRUCK，订单为 ORDER-001，目的地为 Shanghai，输出入口、创建与配送路径。
+     * <p>期望结果：使用卡车 TRUCK，订单为 ORDER-001，目的地为 Shanghai，输出入口、创建与配送路径。</p>
      */
     @Test
-    void roadCreatorShouldUseTruckProduct() {
-        Logistics logistics = new RoadLogistics();
-
-        DeliveryReceipt receipt = logistics.planDelivery(
-                new DeliveryRequest("ORDER-3001", "Beijing")
-        );
-
-        assertEquals(new DeliveryReceipt("ORDER-3001", "TRUCK", "Beijing"), receipt);
+    public void testRoadDelivery() {
+        System.out.println("\ntestRoadDelivery ---> 期望：使用卡车 TRUCK，订单为 ORDER-001，目的地为 Shanghai，输出入口、创建与配送路径");
+        DeliveryRequest request = new DeliveryRequest("ORDER-001", "Shanghai");
+        DeliveryReceipt receipt = new RoadLogistics().planDelivery(request);
+        System.out.println("实际配送结果：" + receipt);
     }
 
     /**
-     * 验证海运创建者通过工厂方法提供船舶产品。
+     * 演示使用船舶 SHIP，订单为 ORDER-001，目的地为 Shanghai，输出入口、创建与配送路径。
+     * <p>期望结果：使用船舶 SHIP，订单为 ORDER-001，目的地为 Shanghai，输出入口、创建与配送路径。</p>
      */
     @Test
-    void seaCreatorShouldUseShipProduct() {
-        Logistics logistics = new SeaLogistics();
-
-        DeliveryReceipt receipt = logistics.planDelivery(
-                new DeliveryRequest("ORDER-3002", "Hamburg")
-        );
-
-        assertEquals(new DeliveryReceipt("ORDER-3002", "SHIP", "Hamburg"), receipt);
-    }
-
-    /**
-     * 验证新增空运创建者和产品即可复用稳定流程，无需修改现有创建者。
-     */
-    @Test
-    void newTransportCanBeAddedWithoutChangingExistingCreators() {
-        Logistics airLogistics = new Logistics() {
-            /**
-             * 创建当前物流场景使用的运输产品。
-             *
-             * @return 当前场景的运输产品
-             */
-            @Override
-            protected Transport createTransport() {
-                return request -> new DeliveryReceipt(
-                        request.orderId(),
-                        "AIRPLANE",
-                        request.destination()
-                );
-            }
-        };
-
-        DeliveryReceipt receipt = airLogistics.planDelivery(
-                new DeliveryRequest("ORDER-3003", "New York")
-        );
-
-        assertEquals(new DeliveryReceipt("ORDER-3003", "AIRPLANE", "New York"), receipt);
-    }
-
-    /**
-     * 验证稳定配送流程在调用工厂之前拒绝空请求。
-     */
-    @Test
-    void stableProcessShouldRejectMissingRequest() {
-        Logistics logistics = new RoadLogistics();
-
-        assertThrows(NullPointerException.class, () -> logistics.planDelivery(null));
+    public void testSeaDelivery() {
+        System.out.println("\ntestSeaDelivery ---> 期望：使用船舶 SHIP，订单为 ORDER-001，目的地为 Shanghai，输出入口、创建与配送路径");
+        DeliveryRequest request = new DeliveryRequest("ORDER-001", "Shanghai");
+        DeliveryReceipt receipt = new SeaLogistics().planDelivery(request);
+        System.out.println("实际配送结果：" + receipt);
     }
 }

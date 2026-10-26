@@ -31,10 +31,14 @@ public final class TransportFactory {
         System.out.println("[factory-method/v2] TransportFactory.create ---> 开始执行");
         try {
             Objects.requireNonNull(method, "配送方式 method 不能为空");
-            return switch (method) {
-                case ROAD -> new TruckTransport();
-                case SEA -> new ShipTransport();
-            };
+            switch (method) {
+                case ROAD:
+                    return new TruckTransport();
+                case SEA:
+                    return new ShipTransport();
+                default:
+                    throw new IllegalArgumentException("不支持的配送方式：" + method);
+            }
         } catch (RuntimeException failure) {
             System.out.println("[factory-method/v2] TransportFactory.create ---> 执行失败，异常类型：" + failure.getClass().getSimpleName()
                     + " | " + failure.getMessage());

@@ -27,26 +27,23 @@ V3 中的模式角色：
 
 ## 测试
 
-### 异常为什么没有显示为测试失败？
+### 打印演示与异常观察
 
-原实现已经会对空字段和空请求抛异常，但 JUnit 的 `assertThrows` 会捕获预期异常，
-因此测试通过不等于没有抛异常。正常请求没有失败条件时，模拟运输产品会返回成功。
+每个测试方法上方的中文 Javadoc 标明期望值，方法中直接输出实际结果。
+ExceptionPathTest 分别演示空单号、空目的地、空请求及产品直接调用的参数检查；
+V1/V2 额外演示空配送方式。V3 的 FailurePropagationTest 使用具名普通测试类
+模拟创建失败、配送失败和空产品，不使用 Lambda 或匿名回调。
 
-各版本的 ExceptionPathTest 现覆盖空单号、空目的地、空请求和直接调用产品时的空参数；
-V1/V2 还检查空运输方式。V3 的 FailurePropagationTest 用测试替身模拟工厂创建失败、
-产品执行失败和工厂返回 null，并验证异常原样传出、没有自动重试。
-这些模拟只存在于测试中，不引入特殊订单号或随机失败逻辑。
+异常场景通过 try/catch 打印异常类型和信息，未抛异常时明确提示。
+这里不使用断言：JUnit 的绿色结果只表示方法执行完毕，请人工对照期望。
+在 IDE 设置已捕获异常断点，可以停在实际抛出位置。
 
-关键路径会输出版本、入口、产品和失败原因，例如：
-
+正常控制台路径示例：
 ```text
-[factory-method/v3] Logistics.planDelivery ---> start
-[factory-method/v3] SeaLogistics ---> createTransport
-[factory-method/v3] SHIP ---> deliver ---> start
+[factory-method/v3] Logistics.planDelivery ---> 开始执行
+[factory-method/v3] SeaLogistics ---> 调用 createTransport 创建运输产品
+[factory-method/v3] ShipTransport.deliver ---> 开始执行
 ```
-
-异常测试保留断言并输出失败路径；如需在 IDE 中停在真正的抛出位置，
-启用 Java 异常断点并勾选 caught（已捕获），即可观察被 assertThrows 捕获的异常。
 
 从仓库根目录运行全部版本：
 

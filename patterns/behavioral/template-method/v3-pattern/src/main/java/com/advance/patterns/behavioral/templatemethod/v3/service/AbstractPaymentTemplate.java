@@ -2,7 +2,6 @@ package com.advance.patterns.behavioral.templatemethod.v3.service;
 
 import com.advance.patterns.behavioral.templatemethod.v3.domain.*;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * 支付流程模板，以 final 入口固定顺序并开放渠道步骤和前后置钩子。
@@ -11,16 +10,12 @@ import java.util.function.Consumer;
  * @since 2026-10-26 23:05:19
  */
 public abstract class AbstractPaymentTemplate {
-    /** 教学流程记录器，用于观察步骤顺序。 */
-    private final Consumer<String> events;
 
     /**
      * 创建 AbstractPaymentTemplate 实例并初始化依赖或业务数据。
      *
-     * @param events 教学流程事件记录器，约定不抛出异常
      */
-    protected AbstractPaymentTemplate(Consumer<String> events) {
-        this.events = Objects.requireNonNull(events, "流程记录器 events 不能为空");
+    protected AbstractPaymentTemplate() {
     }
 
     /**
@@ -33,7 +28,6 @@ public abstract class AbstractPaymentTemplate {
     public final PaymentResult pay(PaymentCommand command) {
         Objects.requireNonNull(command, "支付命令 command 不能为空").validate();
         System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 开始执行前置步骤");
-        events.accept("before");
         try {
             System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 进入 beforePay 前置扩展钩子");
             beforePay(command);
@@ -41,15 +35,12 @@ public abstract class AbstractPaymentTemplate {
             System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 进入 afterPay 后置扩展钩子");
             afterPay(command, result);
             System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 业务步骤执行成功");
-            events.accept("success");
             return result;
         } catch (RuntimeException failure) {
             System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 业务步骤执行失败");
-            events.accept("failure");
             throw failure;
         } finally {
             System.out.println("[template-method/v3] AbstractPaymentTemplate ---> 流程执行结束");
-            events.accept("complete");
         }
     }
 

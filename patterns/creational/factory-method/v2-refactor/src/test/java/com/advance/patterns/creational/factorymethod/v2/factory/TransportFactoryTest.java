@@ -1,35 +1,52 @@
 package com.advance.patterns.creational.factorymethod.v2.factory;
 
-import com.advance.patterns.creational.factorymethod.v2.domain.DeliveryMethod;
-import com.advance.patterns.creational.factorymethod.v2.product.ShipTransport;
-import com.advance.patterns.creational.factorymethod.v2.product.TruckTransport;
+import com.advance.patterns.creational.factorymethod.v2.domain.*;
+import com.advance.patterns.creational.factorymethod.v2.product.*;
+import com.advance.patterns.creational.factorymethod.v2.service.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 /**
- * 验证TransportFactoryTest对应的正常路径、边界条件及异常行为。
+ * TransportFactoryTest 的独立打印演示；运行完成不代表结果已自动判定正确。
  *
  * @author advance
- * @since 2026-10-26 23:05:19
+ * @since 2026-10-26 23:26:13
  */
-class TransportFactoryTest {
-
+public class TransportFactoryTest {
     /**
-     * 验证简单工厂为公路和海运分别创建匹配的具体产品。
+     * 演示工厂返回 TruckTransport。
+     * <p>期望结果：工厂返回 TruckTransport。</p>
      */
     @Test
-    void shouldCreateProductForEachDeliveryMethod() {
-        assertInstanceOf(TruckTransport.class, TransportFactory.create(DeliveryMethod.ROAD));
-        assertInstanceOf(ShipTransport.class, TransportFactory.create(DeliveryMethod.SEA));
+    public void testCreateRoad() {
+        System.out.println("\ntestCreateRoad ---> 期望：工厂返回 TruckTransport");
+        Transport transport = TransportFactory.create(DeliveryMethod.ROAD);
+        System.out.println("实际产品类名：" + transport.getClass().getSimpleName());
     }
 
     /**
-     * 验证简单工厂拒绝空配送方式。
+     * 演示工厂返回 ShipTransport。
+     * <p>期望结果：工厂返回 ShipTransport。</p>
      */
     @Test
-    void shouldRejectMissingDeliveryMethod() {
-        assertThrows(NullPointerException.class, () -> TransportFactory.create(null));
+    public void testCreateSea() {
+        System.out.println("\ntestCreateSea ---> 期望：工厂返回 ShipTransport");
+        Transport transport = TransportFactory.create(DeliveryMethod.SEA);
+        System.out.println("实际产品类名：" + transport.getClass().getSimpleName());
+    }
+
+    /**
+     * 演示NullPointerException，工厂拒绝空配送方式。
+     * <p>期望结果：NullPointerException，工厂拒绝空配送方式。</p>
+     */
+    @Test
+    public void testNullMethod() {
+        System.out.println("\ntestNullMethod ---> 期望：NullPointerException，工厂拒绝空配送方式");
+        try {
+            TransportFactory.create(null);
+            System.out.println("实际结果：未抛出异常，请对照期望检查");
+        } catch (RuntimeException exception) {
+            System.out.println("实际异常类型：" + exception.getClass().getSimpleName());
+            System.out.println("实际异常信息：" + exception.getMessage());
+        }
     }
 }
