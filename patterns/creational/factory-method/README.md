@@ -27,6 +27,27 @@ V3 中的模式角色：
 
 ## 测试
 
+### 异常为什么没有显示为测试失败？
+
+原实现已经会对空字段和空请求抛异常，但 JUnit 的 `assertThrows` 会捕获预期异常，
+因此测试通过不等于没有抛异常。正常请求没有失败条件时，模拟运输产品会返回成功。
+
+各版本的 ExceptionPathTest 现覆盖空单号、空目的地、空请求和直接调用产品时的空参数；
+V1/V2 还检查空运输方式。V3 的 FailurePropagationTest 用测试替身模拟工厂创建失败、
+产品执行失败和工厂返回 null，并验证异常原样传出、没有自动重试。
+这些模拟只存在于测试中，不引入特殊订单号或随机失败逻辑。
+
+关键路径会输出版本、入口、产品和失败原因，例如：
+
+```text
+[factory-method/v3] Logistics.planDelivery ---> start
+[factory-method/v3] SeaLogistics ---> createTransport
+[factory-method/v3] SHIP ---> deliver ---> start
+```
+
+异常测试保留断言并输出失败路径；如需在 IDE 中停在真正的抛出位置，
+启用 Java 异常断点并勾选 caught（已捕获），即可观察被 assertThrows 捕获的异常。
+
 从仓库根目录运行全部版本：
 
 ```bash

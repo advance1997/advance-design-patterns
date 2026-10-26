@@ -7,6 +7,7 @@ public final class SeaLogistics extends Logistics {
 
     @Override
     protected Transport createTransport() {
+        System.out.println("[factory-method/v3] SeaLogistics ---> createTransport");
         return new ShipTransport();
     }
 }

@@ -31,12 +31,15 @@ public final class WechatPayment {
     }
 
     private PaymentResult invokeChannel(PaymentCommand command) {
+        System.out.println("[template-method/v2] WechatPayment ---> invoke channel");
         var response = client.createTransaction(command.paymentNo(),
                 command.amount().movePointRight(2).longValueExact());
         if (response == null || !response.success()
                 || response.transactionId() == null || response.transactionId().isBlank()) {
+            System.out.println("[template-method/v2] WechatPayment ---> rejected response");
             throw new PaymentException("微信未确认支付成功");
         }
+        System.out.println("[template-method/v2] WechatPayment ---> convert result");
         return new PaymentResult(command.paymentNo(), "WECHAT_PAY", response.transactionId());
     }
 }

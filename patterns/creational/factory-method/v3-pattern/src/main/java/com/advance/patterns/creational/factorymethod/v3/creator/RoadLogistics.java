@@ -7,6 +7,7 @@ public final class RoadLogistics extends Logistics {
 
     @Override
     protected Transport createTransport() {
+        System.out.println("[factory-method/v3] RoadLogistics ---> createTransport");
         return new TruckTransport();
     }
 }

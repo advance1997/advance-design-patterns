@@ -9,6 +9,7 @@ public record DeliveryRequest(String orderId, String destination) {
 
     private static String requireText(String value, String fieldName) {
         if (value == null || value.isBlank()) {
+            System.out.println("[factory-method/v1] DeliveryRequest ---> validation failed: " + fieldName);
             throw new IllegalArgumentException(fieldName + " must not be blank");
         }
         return value;

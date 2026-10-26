@@ -13,10 +13,17 @@ public final class TransportFactory {
     }
 
     public static Transport create(DeliveryMethod method) {
-        Objects.requireNonNull(method, "method must not be null");
-        return switch (method) {
-            case ROAD -> new TruckTransport();
-            case SEA -> new ShipTransport();
-        };
+        System.out.println("[factory-method/v2] TransportFactory.create ---> start");
+        try {
+            Objects.requireNonNull(method, "method must not be null");
+            return switch (method) {
+                case ROAD -> new TruckTransport();
+                case SEA -> new ShipTransport();
+            };
+        } catch (RuntimeException failure) {
+            System.out.println("[factory-method/v2] TransportFactory.create ---> failure: " + failure.getClass().getSimpleName()
+                    + " | " + failure.getMessage());
+            throw failure;
+        }
     }
 }

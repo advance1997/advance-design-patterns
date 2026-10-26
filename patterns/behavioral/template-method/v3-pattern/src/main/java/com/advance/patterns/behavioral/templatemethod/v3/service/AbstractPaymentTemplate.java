@@ -14,17 +14,23 @@ public abstract class AbstractPaymentTemplate {
 
     public final PaymentResult pay(PaymentCommand command) {
         Objects.requireNonNull(command, "command").validate();
+        System.out.println("[template-method/v3] AbstractPaymentTemplate ---> before");
         events.accept("before");
         try {
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> beforePay hook");
             beforePay(command);
             PaymentResult result = Objects.requireNonNull(doPay(command), "渠道结果不能为空");
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> afterPay hook");
             afterPay(command, result);
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> success");
             events.accept("success");
             return result;
         } catch (RuntimeException failure) {
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> failure");
             events.accept("failure");
             throw failure;
         } finally {
+            System.out.println("[template-method/v3] AbstractPaymentTemplate ---> complete");
             events.accept("complete");
         }
     }

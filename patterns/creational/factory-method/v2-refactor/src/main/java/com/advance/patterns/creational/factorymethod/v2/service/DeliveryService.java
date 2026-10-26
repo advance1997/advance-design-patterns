@@ -11,8 +11,15 @@ import java.util.Objects;
 public final class DeliveryService {
 
     public DeliveryReceipt arrange(DeliveryMethod method, DeliveryRequest request) {
-        Objects.requireNonNull(request, "request must not be null");
-        Transport transport = TransportFactory.create(method);
-        return transport.deliver(request);
+        System.out.println("[factory-method/v2] DeliveryService.arrange ---> start");
+        try {
+            Objects.requireNonNull(request, "request must not be null");
+            Transport transport = TransportFactory.create(method);
+            return transport.deliver(request);
+        } catch (RuntimeException failure) {
+            System.out.println("[factory-method/v2] DeliveryService.arrange ---> failure: " + failure.getClass().getSimpleName()
+                    + " | " + failure.getMessage());
+            throw failure;
+        }
     }
 }

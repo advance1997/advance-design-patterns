@@ -13,8 +13,8 @@ final class PaymentSteps {
     }
 
     void validate(PaymentCommand command) { Objects.requireNonNull(command, "command").validate(); }
-    void before() { events.accept("before"); }
-    void success() { events.accept("success"); }
-    void failure() { events.accept("failure"); }
-    void complete() { events.accept("complete"); }
+    void before() { System.out.println("[template-method/v2] PaymentSteps ---> before"); events.accept("before"); }
+    void success() { System.out.println("[template-method/v2] PaymentSteps ---> success"); events.accept("success"); }
+    void failure() { System.out.println("[template-method/v2] PaymentSteps ---> failure"); events.accept("failure"); }
+    void complete() { System.out.println("[template-method/v2] PaymentSteps ---> complete"); events.accept("complete"); }
 }

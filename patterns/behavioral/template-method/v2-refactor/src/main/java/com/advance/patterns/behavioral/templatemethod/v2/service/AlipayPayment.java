@@ -31,11 +31,14 @@ public final class AlipayPayment {
     }
 
     private PaymentResult invokeChannel(PaymentCommand command) {
+        System.out.println("[template-method/v2] AlipayPayment ---> invoke channel");
         var response = client.pay(command.paymentNo(), command.amount());
         if (response == null || !"10000".equals(response.code())
                 || response.tradeNo() == null || response.tradeNo().isBlank()) {
+            System.out.println("[template-method/v2] AlipayPayment ---> rejected response");
             throw new PaymentException("支付宝未确认支付成功");
         }
+        System.out.println("[template-method/v2] AlipayPayment ---> convert result");
         return new PaymentResult(command.paymentNo(), "ALIPAY", response.tradeNo());
     }
 }
