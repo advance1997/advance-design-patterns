@@ -12,4 +12,7 @@
     <artifactId>behavioral-patterns</artifactId>
     <packaging>pom</packaging>
     <name>Behavioral Patterns</name>
+    <modules>
+        <module>template-method</module>
+    </modules>
 </project>

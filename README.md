@@ -20,6 +20,7 @@ patterns/
 ## 当前实践
 
 - 工厂方法模式：直接创建 → 简单工厂 → 工厂方法
+- [模板方法模式](patterns/behavioral/template-method/README.md)：支付重复流程 → 公共步骤 → 固定骨架与钩子
 
 ## 构建与测试
 

@@ -7,6 +7,14 @@ public final class ShipTransport implements Transport {
 
     @Override
     public DeliveryReceipt deliver(DeliveryRequest request) {
-        return new DeliveryReceipt(request.orderId(), "SHIP", request.destination());
+        System.out.println("[factory-method/v3] SHIP ---> deliver ---> start");
+        try {
+            java.util.Objects.requireNonNull(request, "request must not be null");
+            return new DeliveryReceipt(request.orderId(), "SHIP", request.destination());
+        } catch (RuntimeException failure) {
+            System.out.println("[factory-method/v3] SHIP ---> deliver ---> failure: " + failure.getClass().getSimpleName()
+                    + " | " + failure.getMessage());
+            throw failure;
+        }
     }
 }
