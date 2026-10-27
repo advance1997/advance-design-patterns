@@ -4,3 +4,4 @@ target/
 *.iml
 *.class
 .DS_Store
+docs/conventions.md
