@@ -14,5 +14,6 @@
     <name>Creational Patterns</name>
     <modules>
         <module>factory-method</module>
+        <module>abstract-factory</module>
     </modules>
 </project>

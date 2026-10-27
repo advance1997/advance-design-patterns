@@ -28,11 +28,25 @@ patterns/
 
 - 工厂方法模式：直接创建 → 简单工厂 → 工厂方法
 - [模板方法模式](patterns/behavioral/template-method/README.md)：支付重复流程 → 公共步骤 → 固定骨架与钩子
+- [策略模式](patterns/behavioral/strategy/README.md)：支付渠道条件分支 → 提取渠道实现 → 策略接口与注册表路由
+- [抽象工厂模式](patterns/creational/abstract-factory/README.md)：直接创建 → 独立工厂 → 同渠道支付与退款产品族
 
 ## 构建与测试
 
 ```bash
 ./mvnw test
+```
+
+只运行策略模式：
+
+```bash
+./mvnw -f patterns/behavioral/strategy/pom.xml test
+```
+
+只运行抽象工厂模式：
+
+```bash
+./mvnw -f patterns/creational/abstract-factory/pom.xml test
 ```
 
 只运行工厂方法模式：
