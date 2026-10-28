@@ -39,3 +39,4 @@ Spring 示例采用兼容 Java 8 的 Framework 5.3.39，仅用于教学，不作
 - [单例模式](patterns/creational/singleton/README.md)：共享状态反例 → 同步懒加载 → 安全发布与 Spring 作用域
 - [原型模式](patterns/creational/prototype/README.md)：模板共享 → 浅拷贝 → 可变步骤深拷贝
 - [代理模式](patterns/structural/proxy/README.md)：反射与直接调用 → 静态事务代理 → JDK 动态代理 → Spring 事务 → 自制简化事务框架
+- [装饰器模式](patterns/structural/decorator/README.md)：材料清单集中拼装 → 职责拆分 → 可组合增强 → Spring 装配
