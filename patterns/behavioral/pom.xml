@@ -15,5 +15,6 @@
     <modules>
         <module>strategy</module>
         <module>template-method</module>
+        <module>chain-of-responsibility</module>
     </modules>
 </project>
