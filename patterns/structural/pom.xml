@@ -12,4 +12,7 @@
     <artifactId>structural-patterns</artifactId>
     <packaging>pom</packaging>
     <name>Structural Patterns</name>
+    <modules>
+        <module>proxy</module>
+    </modules>
 </project>

@@ -15,5 +15,10 @@
     <modules>
         <module>factory-method</module>
         <module>abstract-factory</module>
+        <module>registered-factory</module>
+        <module>factory-ioc</module>
+        <module>builder</module>
+        <module>singleton</module>
+        <module>prototype</module>
     </modules>
 </project>
