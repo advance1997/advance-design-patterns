@@ -19,5 +19,6 @@
         <module>flyweight</module>
         <module>bridge</module>
         <module>composite</module>
+        <module>facade</module>
     </modules>
 </project>
