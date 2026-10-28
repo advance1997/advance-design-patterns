@@ -18,5 +18,6 @@
         <module>adapter</module>
         <module>flyweight</module>
         <module>bridge</module>
+        <module>composite</module>
     </modules>
 </project>
