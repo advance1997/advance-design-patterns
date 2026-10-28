@@ -42,3 +42,4 @@ Spring 示例采用兼容 Java 8 的 Framework 5.3.39，仅用于教学，不作
 - [装饰器模式](patterns/structural/decorator/README.md)：材料清单集中拼装 → 职责拆分 → 可组合增强 → Spring 装配
 - [适配器模式](patterns/structural/adapter/README.md)：材料平台直接调用 → 转换职责拆分 → 统一接口 → Spring MVC 适配调度
 - [责任链模式](patterns/behavioral/chain-of-responsibility/README.md)：外呼集中检查 → 提取规则 → 传递与短路 → Servlet Filter
+- [观察者模式](patterns/behavioral/observer/README.md)：分派后直接通知 → 职责拆分 → 订阅与广播 → Spring 事件
