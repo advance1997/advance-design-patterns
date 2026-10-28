@@ -16,5 +16,6 @@
         <module>proxy</module>
         <module>decorator</module>
         <module>adapter</module>
+        <module>flyweight</module>
     </modules>
 </project>
