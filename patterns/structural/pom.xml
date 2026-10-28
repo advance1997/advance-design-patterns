@@ -15,5 +15,6 @@
     <modules>
         <module>proxy</module>
         <module>decorator</module>
+        <module>adapter</module>
     </modules>
 </project>
