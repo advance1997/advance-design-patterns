@@ -20,7 +20,7 @@ public class CollectionService {
                 new MaterialRule("RECORDING", false));
         CollectionTask task = new CollectionTask(caseId);
         for (MaterialRule rule : rules) {
-            if (rule.isRequired()) task.collect(rule.getCode());
+            if (rule.isRequired()) task.require(rule.getCode());
         }
         return task;
     }

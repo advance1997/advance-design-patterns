@@ -5,7 +5,7 @@ import com.advance.patterns.structural.bridge.v2.service.PackageService;
 import org.junit.jupiter.api.Test;
 
 /**
- * 只观察材料抽象维度与输出实现维度是否能够独立替换。
+ * 演示抽取数据对象后，输出渠道分支仍集中在服务中。
  *
  * @author advance
  * @since 2026-10-28 22:05:00
@@ -13,9 +13,15 @@ import org.junit.jupiter.api.Test;
 class BridgeTest {
     /**
      * 输入同一案件诉讼材料包，分别选择内部运营和外部机构输出。
-     * 期望：v服务内部通过分支组合两个维度；
+     * 期望：提取领域对象没有消除 PackageService 中的渠道分支。
      */
-    @Test void independentDimensions(){PackageService service=new PackageService();
-System.out.println("内部结果："+service.export(new MaterialPackage("DEMO-001","诉讼"),"INTERNAL"));
-System.out.println("外部结果："+service.export(new MaterialPackage("DEMO-001","诉讼"),"EXTERNAL"));}
+    @Test
+    void exportOnePackageThroughTwoChannels() {
+        PackageService service = new PackageService();
+        MaterialPackage packageData = new MaterialPackage("DEMO-001", "诉讼");
+
+        System.out.println("期望：诉讼材料内容分别进入内部和外部渠道");
+        System.out.println("内部结果：" + service.export(packageData, "INTERNAL"));
+        System.out.println("外部结果：" + service.export(packageData, "EXTERNAL"));
+    }
 }

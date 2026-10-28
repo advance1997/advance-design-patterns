@@ -8,4 +8,10 @@ import com.advance.patterns.structural.bridge.v3.bridge.OutputChannel;
  * @author advance
  * @since 2026-10-28 22:05:00
  */
-public class InternalChannelBridge implements OutputChannel { public String send(String content){System.out.println("[桥接/v3] InternalChannelBridge.send ---> 内部运营渠道输出");return "内部运营:"+content;} }
+public class InternalChannelBridge implements OutputChannel {
+    @Override
+    public String send(String content) {
+        System.out.println("[桥接/v3] InternalChannelBridge.send ---> 模拟内部运营渠道输出");
+        return "内部运营：" + content;
+    }
+}

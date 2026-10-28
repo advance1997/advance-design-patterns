@@ -1,8 +1,9 @@
 package com.advance.patterns.structural.bridge.v3;
 
 import com.advance.patterns.structural.bridge.v3.domain.MaterialPackage;
+import com.advance.patterns.structural.bridge.v3.bridge.ArbitrationMaterialPackage;
+import com.advance.patterns.structural.bridge.v3.bridge.LitigationMaterialPackage;
 import com.advance.patterns.structural.bridge.v3.bridge.MaterialPackageAbstraction;
-import com.advance.patterns.structural.bridge.v3.bridge.StandardMaterialPackage;
 import com.advance.patterns.structural.bridge.v3.bridge.OutputChannel;
 import com.advance.patterns.structural.bridge.v3.channel.InternalChannelBridge;
 import com.advance.patterns.structural.bridge.v3.channel.ExternalAgencyChannelBridge;
@@ -16,14 +17,21 @@ import org.junit.jupiter.api.Test;
  */
 class BridgeTest {
     /**
-     * 输入同一案件诉讼材料包，分别选择内部运营和外部机构输出。
-     * 期望：v两个 StandardMaterialPackage 复用同一抽象结构，分别桥接到两个 OutputChannel。
+     * 分别组合诉讼、仲裁材料包与内部、外部输出渠道。
+     * 期望：两个材料包抽象可以独立选择两个渠道实现，形成四种组合。
      */
-    @Test void independentDimensions(){MaterialPackage pkg=new MaterialPackage("DEMO-001","诉讼");
-OutputChannel internal=new InternalChannelBridge();
-OutputChannel external=new ExternalAgencyChannelBridge();
-MaterialPackageAbstraction first=new StandardMaterialPackage(internal);
-MaterialPackageAbstraction second=new StandardMaterialPackage(external);
-System.out.println("内部结果："+first.export(pkg));
-System.out.println("外部结果："+second.export(pkg));}
+    @Test
+    void combinePackageTypesWithOutputChannels() {
+        MaterialPackage packageData = new MaterialPackage("DEMO-001");
+        OutputChannel internalChannel = new InternalChannelBridge();
+        OutputChannel externalChannel = new ExternalAgencyChannelBridge();
+        MaterialPackageAbstraction litigationPackage = new LitigationMaterialPackage(internalChannel);
+        MaterialPackageAbstraction arbitrationPackage = new ArbitrationMaterialPackage(internalChannel);
+
+        System.out.println("期望：诉讼和仲裁材料包都可选择任一输出渠道");
+        System.out.println("诉讼 / 内部：" + litigationPackage.export(packageData));
+        System.out.println("诉讼 / 外部：" + new LitigationMaterialPackage(externalChannel).export(packageData));
+        System.out.println("仲裁 / 内部：" + arbitrationPackage.export(packageData));
+        System.out.println("仲裁 / 外部：" + new ArbitrationMaterialPackage(externalChannel).export(packageData));
+    }
 }

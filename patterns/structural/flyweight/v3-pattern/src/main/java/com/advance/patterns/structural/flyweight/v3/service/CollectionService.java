@@ -22,7 +22,7 @@ public class CollectionService {
         for (String definition : definitions) {
             String[] parts = definition.split(":");
             MaterialRuleFlyweight rule = factory.get(parts[0], Boolean.parseBoolean(parts[1]));
-            if (rule.isRequired()) task.collect(rule.getCode());
+            if (rule.isRequired()) task.require(rule.getCode());
         }
         return task;
     }
