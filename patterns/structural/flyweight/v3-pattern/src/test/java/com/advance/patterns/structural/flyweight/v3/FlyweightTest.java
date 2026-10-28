@@ -13,19 +13,22 @@ import org.junit.jupiter.api.Test;
  */
 class FlyweightTest {
     /**
-     * 输入两个虚构案件，使用同一套诉讼材料规则。
-     * 期望：v3输出两份相同必需材料；规则缓存只保留 3 个享元，案件一追加 RECORDING 不影响另一个案件。
+     * 两个案件使用同一套规则，但分别归集不同材料。
+     * 期望：必需清单相同、归集状态独立，规则工厂只缓存 3 个享元。
      */
     @Test
     void shareRulesAndIsolateCaseState() {
         FlyweightFactory factory = new FlyweightFactory();
-CollectionService service = new CollectionService(factory);
-CollectionTask first = service.createTask("DEMO-001");
-CollectionTask second = service.createTask("DEMO-002");
-first.collect("RECORDING");
-System.out.println("案件一材料：" + first.getCollected());
-System.out.println("案件二材料：" + second.getCollected());
-System.out.println("共享享元数量：" + factory.size());
-System.out.println("同一规则对象由工厂缓存复用；案件归集列表保持独立。");
+        CollectionService service = new CollectionService(factory);
+        CollectionTask first = service.createTask("DEMO-001");
+        CollectionTask second = service.createTask("DEMO-002");
+        first.collect("CONTRACT");
+        second.collect("REPAYMENT");
+
+        System.out.println("案件一必需材料：" + first.getRequired());
+        System.out.println("案件一已归集材料：" + first.getCollected());
+        System.out.println("案件二必需材料：" + second.getRequired());
+        System.out.println("案件二已归集材料：" + second.getCollected());
+        System.out.println("共享享元数量（期望 3）：" + factory.size());
     }
 }

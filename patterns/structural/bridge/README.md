@@ -1,47 +1,59 @@
-# 桥接模式：催收材料包与输出渠道分离
+# 桥接模式：拆开催收材料包与输出渠道
 
-## 顺序与场景
+## 业务场景
 
-本次按专题原文顺序补桥接。专题记录显示：桥接是第十六讲，之后是组合、外观、享元；享元虽已按用户指定提前完成，但不视为桥接、组合、外观已完成。
+催收案件需要生成不同用途的材料包，例如诉讼材料包和仲裁材料包；材料包又可能交给内部运营或外部合作机构。材料包种类与输出渠道是两个独立变化的维度。
 
-案例有两个独立变化维度：材料包场景（诉讼、仲裁等）和输出渠道（内部运营、外部机构）。
-本例只生成内存文本并调用具名模拟渠道，不生成真实文件、不加密、不上传、不访问远程服务。
+本例只生成内存中的文本，并用具名 Java 类模拟渠道，不生成文件、不加密、不上传，也不调用远程服务。
+
+## 问题与模式结构
+
+若为每种材料包分别编写内部和外部渠道类，新增一种材料包或渠道都会增加一组组合类。桥接模式把两个变化维度拆成抽象层和实现层，并通过组合关联：
+
+```text
+材料包抽象（Abstraction）                 输出渠道实现（Implementor）
+
+LitigationMaterialPackage ─┬──────────> InternalChannelBridge
+                            └──────────> ExternalAgencyChannelBridge
+ArbitrationMaterialPackage ┬──────────> InternalChannelBridge
+                            └──────────> ExternalAgencyChannelBridge
+```
+
+`MaterialPackageAbstraction` 持有 `OutputChannel`，具体材料包类型决定输出内容，具体渠道负责如何输出。更换任一侧时不需要为每个组合新增专用类。本例用诉讼/仲裁与内部/外部两两组合，测试直接打印四种组合的路径和结果。
 
 ## 版本演进
 
-| 版本 | 实现 | 问题 |
+| 版本 | 实现 | 尚存问题 |
 | --- | --- | --- |
-| v1-naive | PackageService 同时判断材料场景和渠道 | 两个维度组合在一个服务，新增组合继续堆分支 |
-| v2-refactor | 保留同样的集中组合但抽出领域对象 | 数据对象清楚了，两个变化维度仍未解耦 |
-| v3-pattern | MaterialPackageAbstraction 持有 OutputChannel | 材料抽象和输出实现可独立扩展 |
-
-桥接模式不是简单“把对象放进字段”。关键是把两个都可能变化的维度拆成两个层次：
+| v1-naive | `PackageService` 根据渠道字符串选择渠道类 | 业务服务集中选择实现，调用方传字符串；新增材料包和渠道时分支增长 |
+| v2-refactor | 把案件编号和场景整理为 `MaterialPackage` 数据对象 | 数据表达更清楚，但服务仍集中选择渠道，变化维度没有拆开 |
+| v3-pattern | 材料包抽象持有 `OutputChannel` 接口；诉讼、仲裁和各渠道分别实现自己的职责 | 两个维度可以独立扩展和组合 |
 
 ```text
-材料包抽象维度                         输出实现维度
-StandardMaterialPackage  ────────>  InternalChannelBridge
-                                └─> ExternalAgencyChannelBridge
+v3-pattern
+MaterialPackageAbstraction
+├── LitigationMaterialPackage
+└── ArbitrationMaterialPackage
+          │ 持有
+          ▼
+OutputChannel
+├── InternalChannelBridge
+└── ExternalAgencyChannelBridge
 ```
 
-`StandardMaterialPackage` 面向 `OutputChannel` 接口；增加新的材料包类型不需要复制内部/外部渠道类，
-增加新的输出渠道也不需要复制每种材料包。这里使用组合而非多重继承，适合 Java 8 和后续依赖注入。
+## 与相近模式的区别
 
-## 与其他模式区别
-
-- 装饰器是在同一接口上逐层增强职责；桥接是把两个变化维度拆开并长期独立扩展。
-- 适配器解决已有接口不兼容；桥接从设计开始就定义抽象与实现两个维度。
-- 策略通常替换一组算法；桥接中的渠道实现是一个独立变化轴，抽象对象仍可复用。
-
-本例没有增加 Spring、MyBatis 或网络层，因为用户已明确后续新练习直接使用模拟场景；桥接的核心是结构关系，普通 Java 类更容易调试。
+- 桥接从设计时就拆开两个独立变化维度；适配器则让已有的不兼容接口能够协作。
+- 桥接建立抽象与实现的长期关联；策略通常是在同一职责下替换一组算法。
+- 装饰器在同一接口上逐层增加职责；桥接不会把渠道包装成材料包的附加行为。
 
 ## 测试与运行
 
-每个版本 1 个打印式测试，共 3 个。输入同一虚构案件的诉讼材料包，分别选择两个渠道；测试只观察维度组合和路径，不做性能或外部接口测试。
+每个版本一个打印式用例。v1/v2 用同一诉讼材料包走两个渠道，观察服务分支；v3 组合两种材料包与两个渠道，观察四种组合都通过同一抽象接口调用。测试不使用断言框架，也不扩展到文件、网络或性能测试。
 
 ```bash
-mvn test
 mvn -f patterns/structural/bridge/pom.xml test
 mvn -f patterns/structural/bridge/v3-pattern/pom.xml test
 ```
 
-所有源码兼容 JDK 1.8，版本不互相依赖，测试不使用断言、参数化或函数式写法。
+所有源码兼容 JDK 1.8，版本相互独立。该示例聚焦桥接结构，因此不引入 Spring 或其他框架。

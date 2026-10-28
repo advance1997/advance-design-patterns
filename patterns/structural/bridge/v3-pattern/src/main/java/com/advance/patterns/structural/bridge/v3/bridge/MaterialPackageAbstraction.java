@@ -10,6 +10,15 @@ import com.advance.patterns.structural.bridge.v3.domain.MaterialPackage;
  */
 public abstract class MaterialPackageAbstraction {
     protected final OutputChannel channel;
-    protected MaterialPackageAbstraction(OutputChannel channel){this.channel=channel;}
+    protected MaterialPackageAbstraction(OutputChannel channel) {
+        this.channel = channel;
+    }
+
+    /**
+     * 生成材料包内容并交给实现维度的输出渠道。
+     *
+     * @param pkg 当前案件材料包数据
+     * @return 模拟渠道返回的输出结果
+     */
     public abstract String export(MaterialPackage pkg);
 }

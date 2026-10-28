@@ -16,7 +16,7 @@ public class CollectionService {
         System.out.println("[享元/v2] CollectionService.createTask ---> 调用规则构建方法");
         List<MaterialRule> rules = buildRules();
         CollectionTask task = new CollectionTask(caseId);
-        for (MaterialRule rule : rules) if (rule.isRequired()) task.collect(rule.getCode());
+        for (MaterialRule rule : rules) if (rule.isRequired()) task.require(rule.getCode());
         return task;
     }
     private List<MaterialRule> buildRules() {

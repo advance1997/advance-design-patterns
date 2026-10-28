@@ -7,5 +7,14 @@ package com.advance.patterns.structural.bridge.v2.channel;
  * @since 2026-10-28 22:05:00
  */
 public class InternalChannel {
-    public String send(String content){System.out.println("[桥接/v2] InternalChannel.send ---> 内部运营渠道输出");return "内部:" + content;}
+    /**
+     * 模拟将材料包交付给内部运营。
+     *
+     * @param content 材料包文本
+     * @return 内部渠道处理结果
+     */
+    public String send(String content) {
+        System.out.println("[桥接/v2] InternalChannel.send ---> 模拟内部运营输出");
+        return "内部运营：" + content;
+    }
 }
