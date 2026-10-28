@@ -17,5 +17,6 @@
         <module>decorator</module>
         <module>adapter</module>
         <module>flyweight</module>
+        <module>bridge</module>
     </modules>
 </project>
