@@ -46,5 +46,6 @@ Spring 示例采用兼容 Java 8 的 Framework 5.3.39，仅用于教学，不作
 - [外观模式](patterns/structural/facade/README.md)：调用方逐个编排材料子系统 → 工作流整理 → 统一流程入口
 - [享元模式](patterns/structural/flyweight/README.md)：材料规则重复创建 → 构建职责提取 → 共享规则与案件状态分离
 - [责任链模式](patterns/behavioral/chain-of-responsibility/README.md)：外呼集中检查 → 提取规则 → 传递与短路 → Servlet Filter
+- [命令模式](patterns/behavioral/command/README.md)：直接同步操作 → GoF 命令对象与排队执行 → 数据命令、后台 Worker 与 Handler
 - [观察者模式](patterns/behavioral/observer/README.md)：分派后直接通知 → 职责拆分 → 订阅与广播 → Spring 事件
 - [状态模式](patterns/behavioral/state/README.md)：和解方案集中判断 → 规则拆分 → 状态对象 → Spring Boot/MyBatis/事务 Outbox
