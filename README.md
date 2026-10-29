@@ -48,5 +48,6 @@ Spring 示例采用兼容 Java 8 的 Framework 5.3.39，仅用于教学，不作
 - [责任链模式](patterns/behavioral/chain-of-responsibility/README.md)：外呼集中检查 → 提取规则 → 传递与短路 → Servlet Filter
 - [命令模式](patterns/behavioral/command/README.md)：直接同步操作 → GoF 命令对象与排队执行 → 数据命令、后台 Worker 与 Handler
 - [迭代器模式](patterns/behavioral/iterator/README.md)：分案服务直接遍历分组 → 提取统一案件池 → 自定义迭代器跨组遍历并跳过空组
+- [中介者模式](patterns/behavioral/mediator/README.md)：工作台组件直接互调 → 抽取协调者 → 通过中介者接口协调案件选择、合规校验、外呼与回调
 - [观察者模式](patterns/behavioral/observer/README.md)：分派后直接通知 → 职责拆分 → 订阅与广播 → Spring 事件
 - [状态模式](patterns/behavioral/state/README.md)：和解方案集中判断 → 规则拆分 → 状态对象 → Spring Boot/MyBatis/事务 Outbox
