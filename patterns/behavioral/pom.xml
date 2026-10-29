@@ -19,5 +19,6 @@
         <module>observer</module>
         <module>state</module>
         <module>command</module>
+        <module>iterator</module>
     </modules>
 </project>
