@@ -15,6 +15,7 @@
         <module>patterns/creational</module>
         <module>patterns/structural</module>
         <module>patterns/behavioral</module>
+        <module>examples</module>
     </modules>
 
     <properties>
