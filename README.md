@@ -18,6 +18,8 @@ patterns/
 ├── creational/    # 创建型模式
 ├── structural/    # 结构型模式
 └── behavioral/    # 行为型模式
+examples/
+└── comprehensive/ # 多种设计模式协作的综合案例
 ```
 
 每个设计模式目录是一个聚合模块，每个推演版本则是独立的叶子模块。版本之间不共享业务代码，也不互相声明依赖，以便直接比较每次演进带来的结构变化。
@@ -50,5 +52,6 @@ Spring 示例采用兼容 Java 8 的 Framework 5.3.39，仅用于教学，不作
 - [迭代器模式](patterns/behavioral/iterator/README.md)：分案服务直接遍历分组 → 提取统一案件池 → 自定义迭代器跨组遍历并跳过空组
 - [中介者模式](patterns/behavioral/mediator/README.md)：工作台组件直接互调 → 抽取协调者 → 通过中介者接口协调案件选择、合规校验、外呼与回调
 - [备忘录模式](patterns/behavioral/memento/README.md)：和解草稿手工备份 → 独立快照与历史栈 → 封装状态的 Memento，并补充 Command/Mediator/State 组合与版本历史边界
+- [综合实战：电商营销优惠引擎](examples/comprehensive/ecommerce-marketing-engine/README.md)：解释器执行优惠规则、组合组织 AST、享元复用 AST、策略计算优惠；MySQL 由内存促销目录模拟
 - [观察者模式](patterns/behavioral/observer/README.md)：分派后直接通知 → 职责拆分 → 订阅与广播 → Spring 事件
 - [状态模式](patterns/behavioral/state/README.md)：和解方案集中判断 → 规则拆分 → 状态对象 → Spring Boot/MyBatis/事务 Outbox
