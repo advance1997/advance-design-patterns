@@ -58,3 +58,4 @@
 ## 专题综合实战
 
 - [x] 电商营销优惠引擎（解释器执行规则 → 组合构建 AST → 享元复用 AST → 策略计算优惠；两笔订单及互斥最优券选择）
+- [x] 催收诉讼材料归集系统最终架构（Facade、Strategy、Adapter、责任链、Composite、Iterator、Visitor、Builder；Mock DB/Outbox/MQ/对象存储）
